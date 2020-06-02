@@ -1,0 +1,234 @@
+﻿@model IEnumerable<Web_Service.Models.Task>
+
+
+@{
+    ViewData["Title"] = "Create";
+
+}
+
+<h1>Query Builder</h1>
+
+<br />
+<br />
+<div class="row">
+    <div class="col-md-11">
+        <form asp-action="Select" id="run" method="post" name="forma">
+            <label style="padding-right:50px">And/Or</label>
+            <label style="padding-right:85px">Field</label>
+            <label style="padding-right: 20px">Operator</label>
+            <label style="padding-right:75px" id="Value">Value</label>
+            <label>Add/Delete</label>
+            <br />
+
+            <table class="table-data" id="Data">
+
+                <tr>
+                    <td style="padding-right:10px">
+                        <div class="form-group">
+                            <input type="checkbox" value="1" id="Group[i].id_group" name="Group[0].id_group">
+                        </div>
+                    </td>
+                    <td style="padding-right:10px">
+                        <div class="form-group">
+                            <select name="Group[0].AndOr" disabled id="Group[i].AndOr" >
+                                <option value=""></option>
+                                <option value="And">And</option>
+                                <option value="Or">Or</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td style="padding-left:10px;padding-right:10px">
+                        <div class="form-group">
+                            <select id="Group[i].Field" name="Group[0].Field">
+                                <option id="run" value="Nume_Task">Nume Task</option>
+                                <option value="Data_Task">Data Task</option>
+                                <option value="Nume_Utilizator">Nume Utilizator</option>
+                                <option value="Tip">Tip Task</option>
+                                <option value="Statut">Statut Task</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td style="padding-left:10px;padding-right:10px">
+                        <div class="form-group">
+                            <select id="Group[i].Operator" name="Group[0].Operator">
+                                <option value="=">=</option>
+                                <option value="!=">!=</option>
+                                <option value=">">></option>
+                                <option value="<"><</option>
+                                <option value=">=">>=</option>
+                                <option value="<="><=</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td style="padding-left:10px;padding-right:10px">
+                        <div class="form-group">
+                            <input type="text" id="Group[i].Value" name="Group[0].Value" style="width: 105px;">
+                        </div>
+                    </td>
+                    <td style="padding-left:10px;padding-right:10px">
+                        <input id="1" type="button" onclick="addRow()" value="+" class="btn btn-primary" style="background-color:white;color:green;border-color:white; font-size:larger " />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-right:10px">
+                        <div class="form-group">
+                            <input type="checkbox" value="1" id="Group[i].id_group" name="Group[1].id_group">
+                        </div>
+                    </td>
+                    <td style="padding-right:10px">
+                        <div class="form-group">
+                            <select id="Group[i].AndOr" name="Group[1].AndOr">
+                                <option value=""></option>
+                                <option value="And">And</option>
+                                <option value="Or">Or</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td style="padding-left:10px;padding-right:10px">
+                        <div class="form-group">
+                            <select id="Group[i].Field" name="Group[1].Field">
+                                <option id="run" value="Nume_Task">Nume Task</option>
+                                <option value="Data_Task">Data Task</option>
+                                <option value="Nume_Utilizator">Nume Utilizator</option>
+                                <option value="Tip">Tip Task</option>
+                                <option value="Statut">Statut Task</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td style="padding-left:10px;padding-right:10px">
+                        <div class="form-group">
+                            <select id="Group[i].Operator" name="Group[1].Operator">
+                                <option value="=">=</option>
+                                <option value="!=">!=</option>
+                                <option value=">">></option>
+                                <option value="<"><</option>
+                                <option value=">=">>=</option>
+                                <option value="<="><=</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td style="padding-left:10px;padding-right:10px">
+                        <div class="form-group">
+                            <input type="text" id="Group[i].Value" name="Group[1].Value" style="width: 105px;">
+                        </div>
+                    </td>
+                    <td style="padding-left:10px;padding-right:10px">
+                        <input id="1" type="button" onclick="addRow()" value="+" class="btn btn-primary" style="background-color:white;color:green;border-color:white; font-size:larger " />
+                    </td>
+                    <td style="padding-left:10px;padding-right:10px">
+                        <input type="button" onclick="deleteRow(this)" value="x" class="btn btn-primary" style="background-color:white;color:red;border-color:white; font-size:larger " />
+                    </td>
+                </tr>
+            </table>
+
+            <br />
+            <div class="form-group">
+                <input type="button" onclick="addRow()" value="+ Add Clause" class="btn btn-primary" style="background-color:white;color:Blue;border-color:white;" />
+            </div>
+
+
+
+            <br />
+            <div class="form-group">
+                <input type="button" id="dddd" onclick="call()" value="Save query into xml" class="btn btn-primary" />
+            </div>
+            <div class="form-group">
+                <input hidden type="submit" id="save" value="Save Query into XML" form="run" class="btn btn-primary" asp-action="Select" />
+            </div>
+            <div class="form-group">
+                <input type="submit" id="run" value="Run Query" formmethod="get" class="btn btn-primary" asp-action="Generate" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<br />
+
+
+<br />
+<br />
+<br />
+
+@*This div is used to add scroll bar to the table*@
+<div style="height:250px; overflow:auto;">
+    @*This is the output of the query result*@
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nume_Task)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Data_Task)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nume_Utilizator)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Statut)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nume_Task)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Data_Task)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nume_Utilizator)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Statut)
+                    </td>
+                    @*<td>
+                            <a asp-action="Edit" asp-route-id="@item.id_task">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.id_task">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.id_task">Delete</a>
+                        </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function deleteRow(r) {
+        const i = r.parentNode.parentNode.rowIndex;
+        document.getElementById("Data").deleteRow(i);
+
+
+    }
+
+    function addRow() {
+        const html = $('#Data tr:last').html();
+        $('#Data tr:last').after("<tr>" + html + "</tr>");
+    }
+
+    function call() {
+        //var arr = ["id_group", "Value", "Field", "Operator", "AndOr"];
+
+        //var x = $('#Data tr').length
+
+        //for (var i = 0; i < 2; i++) {
+        //    arr.forEach((idPart) => {
+        //        document.getElementById(`Group[i].${idPart}`).name =  `Group[${i}].${idPart}`;
+        //    })
+        //}
+        document.getElementById("save").click();
+        document.getElementById("run").click();
+    }
+</script>
+
