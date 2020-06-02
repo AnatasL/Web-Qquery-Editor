@@ -1,0 +1,70 @@
+# Proxy XML-JSON Web-Service (WEB API)
+
+## Task brief description:
+- create a proxy-like web service, that will implement XML-JSON and JSON-XML communication in-between two virtual systems, called for "A" and "B".
+
+## Task high-level abstract description:
+- for generation of some collection of data, represented by data table, a query is formed in the system "A", using existing DB, Filters and Logical Expressions (see "TFS query editor" as an example [!])
+- system "A" has a role of "donor", and should deliver data to system "B"
+- system "A" has an XML based communication, while system "B" uses JSON communication
+- the proxy-like mapper web-service is needed, in order to fit it as an communicational adapter in-between systems "A" and "B"
+
+## General requirements
+1. Technology and framework to use: .NET Core 2+
+2. Method unit-testing coverage: mandatory
+3. API documentation: mandatory
+4. Performance considerations:
+    - caching of requests to XML file; XML is stored on the File System
+    - caching of resulting JSON response (optional)
+5. Source code hosting: GIT repository on Gitlab
+6. Optional bonus: UML class/object diagram attached to a solution entities
+
+Technical Requirements for Implementation
+0.	Implement object model that represents "WHERE" part of SQL query. "Fetch" node in XML file is used as storage of WHERE part of SQL query.
+
+
+
+
+
+1. GET xxx/
+return JSON for the following XML - feel free to propose JSON format for it:
+    a. "filter" used to construct WHERE part of SQL query
+    b. "condition" must be support grouping with logical operand "And/Or" - feel free to propose XML format for it
+    c. "operator" must support ">,<,=,!=" with perspective to be extended
+    d. "value" can be either "text, array"  array to support t-sql "IN (value1, value2....)" syntax
+    e. "sort" used to construct ORDER BY part of SQL query
+Sample XML file structure:
+    <fetch>
+        <filter>
+            <Or>
+                <condition attribute="[FieldName1]" operator="[>,<,=,!=]" value="[text, array, FieldName, @Expression]" />
+                <condition attribute="[FieldName2]" operator="[>,<,=,!=]" value="[text, array, FieldName, @Expression]" />
+            </Or>
+            <condition attribute="[FieldName3]" operator="[>,<,=,!=....]" value="[text, array, FieldName, @Expression]">
+                <condition attribute="[FieldName4]" operator="[>,<,=,!=....]" value="[text, array, FieldName, @Expression]" />
+            </condition>            
+            <condition attribute="[FieldName]" operator="[>,<,=,!=....]" value="[text, array, FieldName, @Expression]" />
+        </filter>
+        <sort>
+            <column name="CreatedOn" ascending="false" />
+        </sort>
+    </fetch>
+
+Notice: full XML file example will be sent to Consultant via separate attachment.
+2. POST xxx/
+    A: parse JSON and save into XML
+    B (optional): generate SQL WHERE and ORDER BY
+
+## Help Materials
+
+1. TFS query editor: https://docs.microsoft.com/en-us/vsts/work/track/using-queries?view=vsts&tabs=new-query-exp
+
+2. Deploy with gitlab: https://docs.gitlab.com/ee/ci/environments.html
+
+
+
+## Assignment conditions:
+
+1. Total time for execution: 10h working hours, time will be measured by GIT timestamps, where delta in-between start commit and end commit should be <= 10h
+
+2. Additional BA and Requirements information is to be provided upon candidate's request before the assignment start
